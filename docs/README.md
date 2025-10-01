@@ -25,22 +25,6 @@ A TypeScript/Node.js implementation of the Model Context Protocol (MCP) server f
 1. Sign up for a [Free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key)
 2. Copy your API key for configuration
 
-## 📦 Installation
-
-### Option 1: Using npm (Recommended)
-
-```bash
-npm install -g mcp-enterprise-server
-```
-
-### Option 2: From Source
-
-```bash
-git clone https://github.com/your-username/alphavantage-stock-data.git
-cd alphavantage-stock-data
-npm install
-npm run build
-```
 
 ## ⚙️ Configuration
 
@@ -143,38 +127,6 @@ Symbol: MSFT
 Threshold: 3
 ```
 
-## 📊 Resources
-
-### Stock Data Resource
-
-Access stock data through the resource pattern:
-
-**URI Template:** `stock://{symbol}/{interval}`
-
-**Examples:**
-- `stock://AAPL/daily` - Daily data for Apple
-- `stock://GOOGL/5min` - 5-minute interval data for Google
-- `stock://MSFT/1min` - 1-minute interval data for Microsoft
-
-## 🔍 Example Queries
-
-Here are some example queries you can use with the MCP server:
-
-1. **Basic Stock Quote:**
-   - "Get the current stock price for Apple (AAPL)"
-   - "What's the latest closing price for Tesla?"
-
-2. **Historical Data:**
-   - "Show me the last 10 days of daily data for Microsoft"
-   - "Get hourly data for Google stock today"
-
-3. **Price Alerts:**
-   - "Alert me if Amazon stock moves more than 3% in a day"
-   - "Check for significant price movements in Netflix stock"
-
-4. **Market Analysis:**
-   - "Compare the performance of AAPL and GOOGL over the last week"
-   - "Show me the trading volume patterns for Tesla"
 
 ## 🏗️ Development
 
@@ -191,33 +143,6 @@ npm run build
 npm run build:dev
 ```
 
-### Testing
-
-```bash
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Generate coverage report
-npm run test:coverage
-```
-
-### Code Quality
-
-```bash
-# Lint code
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
-# Format code
-npm run format
-
-# Type check
-npm run type-check
 ```
 
 ## 📁 Project Structure
@@ -308,20 +233,3 @@ This project is licensed under the MIT License - see the [LICENSE](../LICENSE) f
 
 - [Alpha Vantage](https://www.alphavantage.co/) for providing the stock market data API
 - [Model Context Protocol](https://modelcontextprotocol.io/) for the protocol specification
-- The TypeScript and Node.js communities for excellent tooling
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/your-username/alphavantage-stock-data/issues)
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
-- **Alpha Vantage Support**: [support@alphavantage.co](mailto:support@alphavantage.co)
-
-## 🔗 Related Projects
-
-- [Official Alpha Vantage Python MCP Server](https://github.com/alphavantage/alpha_vantage_mcp)
-- [Model Context Protocol SDK](https://github.com/modelcontextprotocol/typescript-sdk)
-- [Claude Desktop](https://claude.ai/desktop)
-
----
-
-**Note**: This is an unofficial TypeScript/Node.js implementation. For the official Python implementation, visit the [Alpha Vantage MCP repository](https://github.com/alphavantage/alpha_vantage_mcp).
