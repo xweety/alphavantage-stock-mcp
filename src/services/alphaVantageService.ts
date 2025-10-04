@@ -68,7 +68,7 @@ export async function getStockData(
       intervalStr,
     );
     return formattedData;
-  } catch (error) {
+  } catch (error: any) {
     if (HttpService.isAxiosError(error)) {
       throw new Error(`API request failed: ${error.message}`);
     }
@@ -176,7 +176,7 @@ export async function getStockAlerts(
     }
 
     return alerts;
-  } catch (error) {
+  } catch (error: any) {
     if (HttpService.isAxiosError(error)) {
       throw new Error(`API request failed: ${error.message}`);
     }
