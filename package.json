@@ -1,6 +1,6 @@
 {
   "name": "alphavantage-stock-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Stock data and analysis server using Alpha Vantage API for Model Context Protocol (MCP)",
   "main": "dist/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "format": "prettier --write src/**/*.ts",
     "prepublishOnly": "npm run build"
   },
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/xweety/alphavantage-stock-mcp.git"
   },
