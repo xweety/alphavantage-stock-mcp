@@ -1,6 +1,6 @@
 {
   "name": "alphavantage-stock-mcp",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "MCP server for Stock data and analysis server using Alpha Vantage API",
   "main": "dist/index.js",
   "bin": {
