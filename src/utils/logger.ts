@@ -1,10 +1,17 @@
-import winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
-import { existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import winston from "winston";
+import DailyRotateFile from "winston-daily-rotate-file";
+import { existsSync, mkdirSync } from "fs";
+import { join } from "path";
 
 // Log levels type
-export type LogLevel = 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
+export type LogLevel =
+  | "error"
+  | "warn"
+  | "info"
+  | "http"
+  | "verbose"
+  | "debug"
+  | "silly";
 
 // Logger configuration interface
 export interface LoggerConfig {
@@ -23,22 +30,22 @@ export class Logger {
   private context: string;
   private static instances: Map<string, Logger> = new Map();
 
-  constructor(context: string = 'App', config: LoggerConfig = {}) {
+  constructor(context: string = "App", config: LoggerConfig = {}) {
     this.context = context;
-    
+
     // Ensure logs directory exists
-    const logDirectory = config.logDirectory || 'logs';
+    const logDirectory = config.logDirectory || "logs";
     this.ensureLogDirectoryExists(logDirectory);
 
     // Default configuration
     const defaultConfig: Required<LoggerConfig> = {
-      level: (process.env.LOG_LEVEL as LogLevel) || 'info',
+      level: (process.env.LOG_LEVEL as LogLevel) || "info",
       context,
-      enableFileLogging: process.env.NODE_ENV !== 'test',
-      enableRotation: process.env.NODE_ENV === 'production',
+      enableFileLogging: process.env.NODE_ENV !== "test",
+      enableRotation: process.env.NODE_ENV === "production",
       logDirectory,
-      maxFiles: '14d', // Keep logs for 14 days
-      maxSize: '20m',  // Max file size 20MB
+      maxFiles: "14d", // Keep logs for 14 days
+      maxSize: "20m", // Max file size 20MB
       enableConsole: true,
       ...config,
     };
@@ -48,11 +55,19 @@ export class Logger {
       format: this.createLogFormat(context),
       transports: this.createTransports(defaultConfig),
       // Handle uncaught exceptions and rejections
-      exceptionHandlers: defaultConfig.enableFileLogging 
-        ? [new winston.transports.File({ filename: join(logDirectory, 'exceptions.log') })]
+      exceptionHandlers: defaultConfig.enableFileLogging
+        ? [
+            new winston.transports.File({
+              filename: join(logDirectory, "exceptions.log"),
+            }),
+          ]
         : [],
-      rejectionHandlers: defaultConfig.enableFileLogging 
-        ? [new winston.transports.File({ filename: join(logDirectory, 'rejections.log') })]
+      rejectionHandlers: defaultConfig.enableFileLogging
+        ? [
+            new winston.transports.File({
+              filename: join(logDirectory, "rejections.log"),
+            }),
+          ]
         : [],
       exitOnError: false, // Don't exit on handled exceptions
     });
@@ -75,12 +90,14 @@ export class Logger {
    * Create log format with context
    */
   private createLogFormat(context: string): winston.Logform.Format {
-    const isProduction = process.env.NODE_ENV === 'production';
-    
+    const isProduction = process.env.NODE_ENV === "production";
+
     const baseFormat = winston.format.combine(
-      winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+      winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss.SSS" }),
       winston.format.errors({ stack: true }),
-      winston.format.metadata({ fillExcept: ['message', 'level', 'timestamp'] })
+      winston.format.metadata({
+        fillExcept: ["message", "level", "timestamp"],
+      }),
     );
 
     if (isProduction) {
@@ -88,36 +105,41 @@ export class Logger {
       return winston.format.combine(
         baseFormat,
         winston.format.json(),
-        winston.format.printf(({ timestamp, level, message, metadata, stack }) => {
-          const logObject: any = {
-            timestamp,
-            level: level.toUpperCase(),
-            context,
-            message,
-            ...(metadata || {}),
-          };
-          
-          if (stack) {
-            logObject.stack = stack;
-          }
-          
-          return JSON.stringify(logObject);
-        })
+        winston.format.printf(
+          ({ timestamp, level, message, metadata, stack }) => {
+            const logObject: any = {
+              timestamp,
+              level: level.toUpperCase(),
+              context,
+              message,
+              ...(metadata || {}),
+            };
+
+            if (stack) {
+              logObject.stack = stack;
+            }
+
+            return JSON.stringify(logObject);
+          },
+        ),
       );
     } else {
       // Human-readable format for development
       return winston.format.combine(
         baseFormat,
         winston.format.colorize(),
-        winston.format.printf(({ timestamp, level, message, metadata, stack }) => {
-          const contextStr = context ? `[${context}]` : '';
-          const metaStr = Object.keys(metadata || {}).length > 0 
-            ? `\n${JSON.stringify(metadata, null, 2)}` 
-            : '';
-          const stackStr = stack ? `\n${stack}` : '';
-          
-          return `${timestamp} ${level} ${contextStr} ${message}${metaStr}${stackStr}`;
-        })
+        winston.format.printf(
+          ({ timestamp, level, message, metadata, stack }) => {
+            const contextStr = context ? `[${context}]` : "";
+            const metaStr =
+              Object.keys(metadata || {}).length > 0
+                ? `\n${JSON.stringify(metadata, null, 2)}`
+                : "";
+            const stackStr = stack ? `\n${stack}` : "";
+
+            return `${timestamp} ${level} ${contextStr} ${message}${metaStr}${stackStr}`;
+          },
+        ),
       );
     }
   }
@@ -125,16 +147,20 @@ export class Logger {
   /**
    * Create winston transports
    */
-  private createTransports(config: Required<LoggerConfig>): winston.transport[] {
+  private createTransports(
+    config: Required<LoggerConfig>,
+  ): winston.transport[] {
     const transports: winston.transport[] = [];
 
     // Console transport
     if (config.enableConsole) {
-      transports.push(new winston.transports.Console({
-        level: config.level,
-        handleExceptions: true,
-        handleRejections: true,
-      }));
+      transports.push(
+        new winston.transports.Console({
+          level: config.level,
+          handleExceptions: true,
+          handleRejections: true,
+        }),
+      );
     }
 
     // File transports
@@ -143,8 +169,8 @@ export class Logger {
         // Rotating file transport for production
         transports.push(
           new DailyRotateFile({
-            filename: join(config.logDirectory, 'application-%DATE%.log'),
-            datePattern: 'YYYY-MM-DD',
+            filename: join(config.logDirectory, "application-%DATE%.log"),
+            datePattern: "YYYY-MM-DD",
             maxFiles: config.maxFiles,
             maxSize: config.maxSize,
             level: config.level,
@@ -152,30 +178,30 @@ export class Logger {
             handleRejections: true,
           }),
           new DailyRotateFile({
-            filename: join(config.logDirectory, 'error-%DATE%.log'),
-            datePattern: 'YYYY-MM-DD',
+            filename: join(config.logDirectory, "error-%DATE%.log"),
+            datePattern: "YYYY-MM-DD",
             maxFiles: config.maxFiles,
             maxSize: config.maxSize,
-            level: 'error',
+            level: "error",
             handleExceptions: true,
             handleRejections: true,
-          })
+          }),
         );
       } else {
         // Simple file transport for development
         transports.push(
           new winston.transports.File({
-            filename: join(config.logDirectory, 'combined.log'),
+            filename: join(config.logDirectory, "combined.log"),
             level: config.level,
             handleExceptions: true,
             handleRejections: true,
           }),
           new winston.transports.File({
-            filename: join(config.logDirectory, 'error.log'),
-            level: 'error',
+            filename: join(config.logDirectory, "error.log"),
+            level: "error",
             handleExceptions: true,
             handleRejections: true,
-          })
+          }),
         );
       }
     }
@@ -186,8 +212,14 @@ export class Logger {
   /**
    * Create child logger with additional context
    */
-  child(childContext: string, metadata: Record<string, any> = {}): winston.Logger {
-    return this.logger.child({ context: `${this.context}:${childContext}`, ...metadata });
+  child(
+    childContext: string,
+    metadata: Record<string, any> = {},
+  ): winston.Logger {
+    return this.logger.child({
+      context: `${this.context}:${childContext}`,
+      ...metadata,
+    });
   }
 
   public debug(message: string, meta?: any): void {
@@ -214,7 +246,7 @@ export class Logger {
    */
   public error(message: string, error?: any, meta?: any): void {
     const errorMeta = { ...meta };
-    
+
     if (error instanceof Error) {
       errorMeta.error = {
         name: error.name,
@@ -224,7 +256,7 @@ export class Logger {
     } else if (error) {
       errorMeta.error = error;
     }
-    
+
     this.logger.error(message, errorMeta);
   }
 
@@ -273,7 +305,10 @@ export class Logger {
   /**
    * Get singleton logger instance
    */
-  public static getInstance(context: string = 'App', config?: LoggerConfig): Logger {
+  public static getInstance(
+    context: string = "App",
+    config?: LoggerConfig,
+  ): Logger {
     if (!Logger.instances.has(context)) {
       Logger.instances.set(context, new Logger(context, config));
     }
@@ -303,16 +338,19 @@ export class Logger {
 }
 
 // Export default logger instance for HttpService
-export const logger = Logger.getInstance('HttpService');
+export const logger = Logger.getInstance("HttpService");
 
 // Export additional pre-configured loggers for different contexts
-export const httpLogger = Logger.getInstance('HTTP', { level: 'http' });
-export const dbLogger = Logger.getInstance('Database');
-export const authLogger = Logger.getInstance('Auth');
-export const mcpLogger = Logger.getInstance('MCP');
+export const httpLogger = Logger.getInstance("HTTP", { level: "http" });
+export const dbLogger = Logger.getInstance("Database");
+export const authLogger = Logger.getInstance("Auth");
+export const mcpLogger = Logger.getInstance("MCP");
 
 // Export logger factory function
-export const createLogger = (context: string, config?: LoggerConfig): Logger => {
+export const createLogger = (
+  context: string,
+  config?: LoggerConfig,
+): Logger => {
   return Logger.create(context, config);
 };
 

@@ -17,41 +17,12 @@ A TypeScript/Node.js implementation of the Model Context Protocol (MCP) server f
 
 ## 📋 Prerequisites
 
-- Node.js 18.0.0 or higher
 - Alpha Vantage API key (free tier available)
 
 ## 🔑 Getting an API Key
 
 1. Sign up for a [Free Alpha Vantage API key](https://www.alphavantage.co/support/#api-key)
-2. Copy your API key for configuration
-
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-Create a `.env` file in your project root or set environment variables:
-
-```bash
-ALPHAVANTAGE_API_KEY=your_api_key_here
-```
-
-## 🏃‍♂️ Running the Server
-
-### Stdio Mode (Default)
-
-This is the standard MCP server mode used for tools like Claude Desktop:
-
-```bash
-# If installed globally
-mcp-enterprise-server
-
-# From source
-npm start
-
-# Development mode
-npm run dev
-```
+2. Copy your API key for Integration with MCP Clients
 
 ## 🔌 Integration with MCP Clients
 
@@ -143,36 +114,6 @@ npm run build
 npm run build:dev
 ```
 
-```
-
-## 📁 Project Structure
-
-```
-alphavantage-stock-data/
-├── src/
-│   ├── index.ts                 # Main entry point
-│   ├── mcp/
-│   │   └── alphaVantageMcp.ts   # MCP server configuration
-│   ├── services/
-│   │   ├── alphaVantageService.ts # Alpha Vantage API integration
-│   │   └── httpService.ts       # HTTP client service
-│   └── utils/
-│       └── logger.ts            # Logging utilities
-├── dist/                        # Compiled JavaScript output
-├── tests/                       # Test files
-├── config/                      # Configuration files
-├── docs/                        # Documentation
-├── package.json                 # NPM package configuration
-├── tsconfig.json               # TypeScript configuration
-└── webpack.config.js           # Webpack configuration
-```
-
-## 🔒 Security & Best Practices
-
-- **API Key Security**: Never commit your API key to version control
-- **Environment Variables**: Use `.env` files for local development
-- **Rate Limiting**: Be aware of Alpha Vantage API rate limits (5 API requests per minute, 500 per day for free tier)
-- **Error Handling**: The server includes comprehensive error handling for API failures
 
 ## 📈 API Rate Limits
 
@@ -188,7 +129,6 @@ Consider upgrading to a premium plan for higher limits if needed.
 
 1. **"ALPHAVANTAGE_API_KEY is required" Error**
    - Ensure your API key is properly set in environment variables
-   - Check that the `.env` file is in the correct location
 
 2. **"API request failed" Error**
    - Verify your API key is valid
