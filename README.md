@@ -7,11 +7,7 @@ A TypeScript/Node.js implementation of the Model Context Protocol (MCP) server f
 
 ## 🚀 Features
 
-- **Real-time Stock Data**: Get current and historical stock prices (OHLCV) with intraday intervals
 - **Daily Stock Data**: Access daily time series data with configurable output sizes
-- **Stock Alerts**: Generate alerts based on price movement thresholds
-- **Multiple Data Sources**: Support for various time intervals (1min, 5min, 15min, 30min, 60min, daily)
-- **Error Handling**: Robust error handling and API response validation
 - **TypeScript**: Full TypeScript support with type definitions
 - **MCP Protocol**: Compatible with MCP-enabled applications like Claude Desktop, VS Code, and more
 
@@ -26,28 +22,25 @@ A TypeScript/Node.js implementation of the Model Context Protocol (MCP) server f
 
 ## 🔌 Integration with MCP Clients
 
-### Claude Desktop
+### MCP json Configuration
 
 Add this json configuration:
 
 ```json
 {
   "mcpServers": {
-    "alphavantage-stock-data": {
-      "command": "node",
-        "type": "stdio",
-      "args": ["/path/to/alphavantage-stock-data/dist/index.js"],
+    "alphavantage-stock-data": {  
+      "command": "npx",
+      "args": [
+        "alphavantage-stock-mcp"
+      ],
       "env": {
-        "ALPHAVANTAGE_API_KEY": "YOUR_API_KEY_HERE"
+        "ALPHAVANTAGE_API_KEY": "YOUR-ALPHA-VANTAGE-API-KEY"
       }
     }
   }
 }
 ```
-
-### VS Code with MCP Extension
-
-If using an MCP extension in VS Code, configure the server path and environment variables according to the extension's documentation.
 
 ## 🛠️ Available Tools
 
@@ -98,56 +91,6 @@ Symbol: MSFT
 Threshold: 3
 ```
 
-
-## 🏗️ Development
-
-### Building the Project
-
-```bash
-# TypeScript compilation
-npm run build_tsc
-
-# Webpack build
-npm run build
-
-# Development build
-npm run build:dev
-```
-
-
-## 📈 API Rate Limits
-
-Alpha Vantage API limits (free tier):
-- **5 API requests per minute**
-- **500 API requests per day**
-
-Consider upgrading to a premium plan for higher limits if needed.
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **"ALPHAVANTAGE_API_KEY is required" Error**
-   - Ensure your API key is properly set in environment variables
-
-2. **"API request failed" Error**
-   - Verify your API key is valid
-   - Check your internet connection
-   - Ensure you haven't exceeded API rate limits
-
-3. **"No time series data found" Error**
-   - Verify the stock symbol is correct
-   - Check if the market is open (for real-time data)
-   - Try a different symbol or time interval
-
-### Debug Mode
-
-Run the server in development mode for detailed logging:
-
-```bash
-npm run dev
-```
-
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these steps:
@@ -164,10 +107,6 @@ We welcome contributions! Please follow these steps:
 - Add tests for new features
 - Update documentation as needed
 - Run linting and tests before submitting
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

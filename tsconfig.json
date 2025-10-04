@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "node16",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "lib": ["ES2022"],
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
@@ -15,14 +17,14 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": "./",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "isolatedModules": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@/types/*": ["src/types/*"],
-      "@/utils/*": ["src/utils/*"],
-      "@/mcp/*": ["src/mcp/*"],
-      "@/auth/*": ["src/auth/*"],
-      "@/monitoring/*": ["src/monitoring/*"]
+      "@/*": ["./src/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/mcp/*": ["./src/mcp/*"]
     }
   },
   "include": [
