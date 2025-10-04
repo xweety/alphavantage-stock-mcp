@@ -1,9 +1,11 @@
 # Alpha Vantage Stock Data MCP Server
 
-[![npm version](https://badge.fury.io/js/mcp-enterprise-server.svg)](https://badge.fury.io/js/mcp-enterprise-server)
+**README Languages:** [English](README.md) | [中文](README_zh.md)
+
+[![npm version](https://badge.fury.io/js/mcp-enterprise-server.svg)](https://www.npmjs.com/package/alphavantage-stock-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A TypeScript/Node.js implementation of the Model Context Protocol (MCP) server for accessing real-time and historical stock market data through the Alpha Vantage API. This server enables LLMs and agentic workflows to seamlessly interact with financial data.
+A TypeScript/Node.js implementation of the Model Context Protocol (MCP) server for accessing historical stock market data through the Alpha Vantage API. This server enables LLMs and agentic workflows to seamlessly interact with financial data.
 
 ## 🚀 Features
 
@@ -100,13 +102,6 @@ We welcome contributions! Please follow these steps:
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Add tests for new features
-- Update documentation as needed
-- Run linting and tests before submitting
 
 ## 🙏 Acknowledgments
 
