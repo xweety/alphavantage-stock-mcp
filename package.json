@@ -1,8 +1,14 @@
 {
   "name": "alphavantage-stock-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Stock data and analysis server using Alpha Vantage API for Model Context Protocol (MCP)",
   "main": "dist/index.js",
+  "bin": {
+    "alphavantage-stock-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "build_tsc": "tsc",
