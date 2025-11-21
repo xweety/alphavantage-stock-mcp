@@ -1,6 +1,6 @@
 # Alpha Vantage 股票数据 MCP 服务器
 
-[![npm version](https://badge.fury.io/js/mcp-enterprise-server.svg)](https://www.npmjs.com/package/alphavantage-stock-mcp)
+[![NPM Version](https://img.shields.io/npm/v/alphavantage-stock-mcp)](https://www.npmjs.com/package/alphavantage-stock-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 基于 TypeScript/Node.js 实现的模型上下文协议 (MCP) 服务器，通过 Alpha Vantage API 访问历史股票市场数据。该服务器使 LLM 和智能体工作流能够无缝地与金融数据交互。
