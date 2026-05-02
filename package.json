@@ -1,6 +1,6 @@
 {
   "name": "alphavantage-stock-mcp",
-  "version": "1.0.8",
+  "version": "2.0.1",
   "description": "For free tier account, MCP server for Stock data and analysis server using Alpha Vantage API ",
   "main": "dist/index.js",
   "bin": {
@@ -33,6 +33,8 @@
     "investment",
     "stock-analyze",
     "alpha-vantage-api",
+    "free-tier",
+    "free account",
     "alpha-vantage-stock-data",
     "mcp",
     "model-context-protocol",
