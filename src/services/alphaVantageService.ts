@@ -13,34 +13,34 @@ const httpService = HttpService.create(BASE_URL);
 /**
  * Fetches stock data from Alpha Vantage API
  * @param symbol Stock symbol (e.g., IBM, AAPL)
- * @param interval Time interval between data points or 'daily' for daily data
- * @param outputsize Amount of data to return (compact or full)
+ * @param interval Time interval between data points for 'daily', 'weekly', or 'monthly' data
  * @returns Formatted stock data as a string
  */
 export async function getStockData(
-  symbol: string | string[],
-  interval: string | string[] | "daily",
-  outputsize: string = "compact",
+  symbol: string,
+  interval: "daily" | "weekly" | "monthly",
 ): Promise<string> {
   try {
-    // Ensure parameters are strings, not arrays
-    const symbolStr = Array.isArray(symbol) ? symbol[0] : symbol;
-    const intervalStr = Array.isArray(interval) ? interval[0] : interval;
-    const outputsizeStr = Array.isArray(outputsize)
-      ? outputsize[0]
-      : outputsize;
-
     let url: string;
     let timeSeriesKey: string;
-
-    if (intervalStr === "daily") {
-      // Use TIME_SERIES_DAILY endpoint
-      url = `${BASE_URL}?function=TIME_SERIES_DAILY&symbol=${symbolStr}&outputsize=${outputsizeStr}&apikey=${accessKey}`;
-      timeSeriesKey = "Time Series (Daily)";
-    } else {
-      // Use TIME_SERIES_INTRADAY endpoint
-      url = `${BASE_URL}?function=TIME_SERIES_INTRADAY&symbol=${symbolStr}&interval=${intervalStr}&outputsize=${outputsizeStr}&apikey=${accessKey}`;
-      timeSeriesKey = `Time Series (${intervalStr})`;
+    const normalizedInterval = interval.toLowerCase() as "daily" | "weekly" | "monthly";
+    switch (normalizedInterval) {
+      case "daily":
+        url = `${BASE_URL}?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=compact&apikey=${accessKey}`;
+        timeSeriesKey = "Time Series (Daily)";
+        break;
+      case "weekly":
+        url = `${BASE_URL}?function=TIME_SERIES_WEEKLY&symbol=${symbol}&apikey=${accessKey}`;
+        timeSeriesKey = "Weekly Time Series";
+        break;
+      case "monthly":
+        url = `${BASE_URL}?function=TIME_SERIES_MONTHLY&symbol=${symbol}&apikey=${accessKey}`;
+        timeSeriesKey = "Monthly Time Series";
+        break;
+      default:
+        url = `${BASE_URL}?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=compact&apikey=${accessKey}`;
+        timeSeriesKey = "Time Series (Daily)";
+        break;
     }
 
     const response = await httpService.get<any>(url);
@@ -64,8 +64,8 @@ export async function getStockData(
     // Format the data
     const formattedData = formatTimeSeriesData(
       timeSeries,
-      symbolStr,
-      intervalStr,
+      symbol,
+      normalizedInterval,
     );
     return formattedData;
   } catch (error: any) {
@@ -82,16 +82,13 @@ export async function getStockData(
 function formatTimeSeriesData(
   timeSeries: any,
   symbol: string,
-  interval: string | "daily",
+  interval: "daily" | "weekly" | "monthly",
 ): string {
   const dates = Object.keys(timeSeries).sort().reverse(); // Most recent first
 
-  let result = `Stock data for ${symbol.toUpperCase()} (${interval === "daily" ? "Daily" : interval} intervals):\n\n`;
+  let result = `Stock data for ${symbol.toUpperCase()} (${interval} intervals):\n\n`;
 
-  // Limit to 10 data points to avoid overwhelming responses
-  const limitedDates = dates.slice(0, 10);
-
-  for (const date of limitedDates) {
+  for (const date of dates) {
     const data = timeSeries[date];
     result += `${date}:\n`;
     result += `  Open: ${data["1. open"]}\n`;
@@ -100,86 +97,5 @@ function formatTimeSeriesData(
     result += `  Close: ${data["4. close"]}\n`;
     result += `  Volume: ${data["5. volume"]}\n\n`;
   }
-
-  if (dates.length > 10) {
-    result += `... and ${dates.length - 10} more data points available.\n`;
-  }
-
   return result;
-}
-
-/**
- * Analyzes stock data to generate alerts based on price movements
- * @param symbol Stock symbol (e.g., IBM, AAPL)
- * @param threshold Percentage threshold for price movement alerts
- * @returns Formatted alerts as a string
- */
-export async function getStockAlerts(
-  symbol: string | string[],
-  threshold: number = 5,
-): Promise<string> {
-  try {
-    // Ensure symbol is a string, not an array
-    const symbolStr = Array.isArray(symbol) ? symbol[0] : symbol;
-
-    // Get daily stock data for analysis
-    const url = `${BASE_URL}?function=TIME_SERIES_DAILY&symbol=${symbolStr}&outputsize=compact&apikey=${accessKey}`;
-    const response = await httpService.get<any>(url);
-
-    if (response.data["Error Message"]) {
-      throw new Error(response.data["Error Message"]);
-    }
-
-    const timeSeries = response.data["Time Series (Daily)"];
-
-    if (!timeSeries) {
-      throw new Error("No time series data found in the response");
-    }
-
-    // Get dates sorted from newest to oldest
-    const dates = Object.keys(timeSeries).sort().reverse();
-
-    if (dates.length < 2) {
-      return `Not enough historical data available for ${symbolStr} to generate alerts.`;
-    }
-
-    let alerts = `Stock Alerts for ${symbolStr.toUpperCase()} (${threshold}% threshold):\n\n`;
-    let alertCount = 0;
-
-    // Analyze the last 10 days (or less if not available)
-    const daysToAnalyze = Math.min(10, dates.length - 1);
-
-    for (let i = 0; i < daysToAnalyze; i++) {
-      const currentDate = dates[i];
-      const previousDate = dates[i + 1];
-
-      const currentClose = parseFloat(timeSeries[currentDate]["4. close"]);
-      const previousClose = parseFloat(timeSeries[previousDate]["4. close"]);
-
-      // Calculate percentage change
-      const percentChange =
-        ((currentClose - previousClose) / previousClose) * 100;
-      const absPercentChange = Math.abs(percentChange);
-
-      // Check if change exceeds threshold
-      if (absPercentChange >= threshold) {
-        const direction = percentChange >= 0 ? "increased" : "decreased";
-        alerts += `${currentDate}: Price ${direction} by ${absPercentChange.toFixed(
-          2,
-        )}% from ${previousClose} to ${currentClose}\n`;
-        alertCount++;
-      }
-    }
-
-    if (alertCount === 0) {
-      alerts += `No significant price movements (>=${threshold}%) detected in the last ${daysToAnalyze} trading days.\n`;
-    }
-
-    return alerts;
-  } catch (error: any) {
-    if (HttpService.isAxiosError(error)) {
-      throw new Error(`API request failed: ${error.message}`);
-    }
-    throw error;
-  }
 }

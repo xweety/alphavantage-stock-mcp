@@ -1,6 +1,6 @@
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import dotenv from "dotenv";
-import { createAlphaVantageMcpServer } from "./mcp/alphaVantageMcp";
+import { createAlphaVantageMcpServer } from "./tools/alphaVantage";
 
 // Load environment variables
 dotenv.config();

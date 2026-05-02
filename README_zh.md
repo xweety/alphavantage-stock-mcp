@@ -5,15 +5,19 @@
 
 基于 TypeScript/Node.js 实现的模型上下文协议 (MCP) 服务器，通过 Alpha Vantage API 访问历史股票市场数据。该服务器使 LLM 和智能体工作流能够无缝地与金融数据交互。
 
+> **⚠️ 仅适用于免费账户**
+> 本 MCP 服务器专为 Alpha Vantage **免费版**账户设计，仅使用免费套餐可用的 API 接口，不支持付费套餐专属接口。
+
 ## 🚀 功能特性
 
+- **免费版兼容**：完全在 Alpha Vantage 免费账户限制内运行
 - **每日股票数据**：访问每日时间序列数据，支持可配置的输出大小
 - **TypeScript**：完整的 TypeScript 支持和类型定义
 - **MCP 协议**：兼容支持 MCP 的应用程序，如 Claude Desktop、VS Code 等
 
 ## 📋 前置要求
 
-- Alpha Vantage API 密钥（提供免费版本）
+- Alpha Vantage **免费版** API 密钥
 
 ## 🔑 获取 API 密钥
 
@@ -44,51 +48,19 @@
 
 ## 🛠️ 可用工具
 
-### 1. get-stock-data
+### get-stock-data
 
-获取具有各种时间间隔的日内股票数据。
+获取指定股票代码和时间间隔的股票数据，返回最新 100 个数据点。
 
 **参数：**
 - `symbol`（必需）：股票代码（例如："AAPL"、"GOOGL"、"MSFT"）
-- `interval`（可选）：时间间隔 - "1min"、"5min"、"15min"、"30min"、"60min"（默认："5min"）
-- `outputsize`（可选）："compact"（最新 100 个数据点）或 "full"（最多 20 年数据）（默认："compact"）
+- `interval`（可选）：时间间隔 - "daily"、"weekly"、"monthly"（默认："daily"）
 
 **使用示例：**
 ```
-获取苹果股票的最新 5 分钟间隔数据
+获取苹果股票的最新周线数据
 股票代码：AAPL
-间隔：5min
-输出大小：compact
-```
-
-### 2. get-daily-stock-data
-
-获取特定股票代码的每日股票数据。
-
-**参数：**
-- `symbol`（必需）：股票代码（例如："AAPL"、"GOOGL"、"MSFT"）
-- `outputsize`（可选）："compact"（最新 100 个数据点）或 "full"（最多 20 年数据）（默认："compact"）
-
-**使用示例：**
-```
-获取特斯拉的每日股票数据
-股票代码：TSLA
-输出大小：full
-```
-
-### 3. get-stock-alerts
-
-基于价格变动阈值生成警报。
-
-**参数：**
-- `symbol`（必需）：股票代码（例如："AAPL"、"GOOGL"、"MSFT"）
-- `threshold`（可选）：价格变动警报的百分比阈值（默认：5）
-
-**使用示例：**
-```
-获取微软 3% 阈值的价格变动警报
-股票代码：MSFT
-阈值：3
+间隔：weekly
 ```
 
 ## 🤝 贡献
