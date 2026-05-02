@@ -24,7 +24,7 @@
       "@/*": ["./src/*"],
       "@/services/*": ["./src/services/*"],
       "@/utils/*": ["./src/utils/*"],
-      "@/mcp/*": ["./src/mcp/*"]
+      "@/tools/*": ["./src/tools/*"]
     }
   },
   "include": [
