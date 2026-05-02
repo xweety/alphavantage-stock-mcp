@@ -1,4 +1,4 @@
-# Alpha Vantage 股票数据 MCP 服务器
+# Alpha Vantage *免费账号* 获取股票数据 的MCP 服务器
 
 [![NPM Version](https://img.shields.io/npm/v/alphavantage-stock-mcp)](https://www.npmjs.com/package/alphavantage-stock-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

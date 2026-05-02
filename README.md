@@ -1,4 +1,4 @@
-# Alpha Vantage Stock Data MCP Server
+# Alpha Vantage Stock Data MCP Server for *Free Tier Account*
 
 **README Languages:** [English](README.md) | [中文](README_zh.md)
 
