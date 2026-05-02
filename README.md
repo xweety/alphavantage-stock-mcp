@@ -7,15 +7,19 @@
 
 A TypeScript/Node.js implementation of the Model Context Protocol (MCP) server for accessing historical stock market data through the Alpha Vantage API. This server enables LLMs and agentic workflows to seamlessly interact with financial data.
 
+> **⚠️ Free Account Only**
+> This MCP server is specifically designed for Alpha Vantage **free tier** accounts. It only uses API endpoints available under the free plan. Paid-tier endpoints are not supported.
+
 ## 🚀 Features
 
+- **Free Tier Compatible**: Works entirely within the Alpha Vantage free account limits
 - **Daily Stock Data**: Access daily time series data with configurable output sizes
 - **TypeScript**: Full TypeScript support with type definitions
 - **MCP Protocol**: Compatible with MCP-enabled applications like Claude Desktop, VS Code, and more
 
 ## 📋 Prerequisites
 
-- Alpha Vantage API key (free tier available)
+- Alpha Vantage **free** API key
 
 ## 🔑 Getting an API Key
 
@@ -46,51 +50,19 @@ Add this json configuration:
 
 ## 🛠️ Available Tools
 
-### 1. get-stock-data
+### get-stock-data
 
-Get intraday stock data with various time intervals.
+Fetch stock data with a specified symbol and interval. Returns the latest 100 data points.
 
 **Parameters:**
 - `symbol` (required): Stock symbol (e.g., "AAPL", "GOOGL", "MSFT")
-- `interval` (optional): Time interval - "1min", "5min", "15min", "30min", "60min" (default: "5min")
-- `outputsize` (optional): "compact" (latest 100 data points) or "full" (up to 20 years) (default: "compact")
+- `interval` (optional): Time interval - "daily", "weekly", "monthly" (default: "daily")
 
 **Example Usage:**
 ```
-Get the latest 5-minute interval data for Apple stock
+Get the latest weekly data for Apple stock
 Symbol: AAPL
-Interval: 5min
-Output size: compact
-```
-
-### 2. get-daily-stock-data
-
-Get daily stock data for a specific symbol.
-
-**Parameters:**
-- `symbol` (required): Stock symbol (e.g., "AAPL", "GOOGL", "MSFT")
-- `outputsize` (optional): "compact" (latest 100 data points) or "full" (up to 20 years) (default: "compact")
-
-**Example Usage:**
-```
-Get daily stock data for Tesla
-Symbol: TSLA
-Output size: full
-```
-
-### 3. get-stock-alerts
-
-Generate alerts based on price movement thresholds.
-
-**Parameters:**
-- `symbol` (required): Stock symbol (e.g., "AAPL", "GOOGL", "MSFT")
-- `threshold` (optional): Percentage threshold for price movement alerts (default: 5)
-
-**Example Usage:**
-```
-Get price movement alerts for Microsoft with 3% threshold
-Symbol: MSFT
-Threshold: 3
+Interval: weekly
 ```
 
 ## 🤝 Contributing
